@@ -3,15 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Glass</title>
+<title>Seaglass</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap');
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    background: #0a0a0a;
-    color: #e0e0e0;
     font-family: 'JetBrains Mono', monospace;
     height: 100vh;
     overflow: hidden;
@@ -20,6 +18,17 @@
     align-items: center;
     justify-content: center;
     -webkit-font-smoothing: antialiased;
+    transition: background 0.8s ease, color 0.8s ease;
+  }
+
+  body.mode-blackbox {
+    background: #080808;
+    color: #e0e0e0;
+  }
+
+  body.mode-glass {
+    background: #f4f3f1;
+    color: #1a1a1a;
   }
 
   /* Wordmark */
@@ -30,28 +39,38 @@
     font-size: 11px;
     font-weight: 300;
     letter-spacing: 0.15em;
-    color: #333;
     text-transform: uppercase;
+    transition: color 0.8s ease;
   }
+  .mode-blackbox .wordmark { color: #282828; }
+  .mode-glass .wordmark { color: #ccc; }
 
   /* Toggle */
   .toggle-container {
     margin-bottom: 64px;
     display: flex;
     align-items: center;
-    gap: 0;
     position: relative;
     user-select: none;
+    z-index: 10;
   }
 
   .toggle-track {
     display: flex;
-    background: #141414;
-    border: 1px solid #222;
     border-radius: 4px;
     position: relative;
     cursor: pointer;
     overflow: hidden;
+    transition: background 0.6s ease, border-color 0.6s ease;
+  }
+
+  .mode-blackbox .toggle-track {
+    background: #141414;
+    border: 1px solid #222;
+  }
+  .mode-glass .toggle-track {
+    background: #e8e7e5;
+    border: 1px solid #d0cfcd;
   }
 
   .toggle-option {
@@ -59,16 +78,16 @@
     font-size: 12px;
     font-weight: 400;
     letter-spacing: 0.08em;
-    color: #555;
     position: relative;
     z-index: 1;
     transition: color 0.4s ease;
     text-transform: uppercase;
   }
 
-  .toggle-option.active {
-    color: #e0e0e0;
-  }
+  .mode-blackbox .toggle-option { color: #555; }
+  .mode-blackbox .toggle-option.active { color: #e0e0e0; }
+  .mode-glass .toggle-option { color: #999; }
+  .mode-glass .toggle-option.active { color: #1a1a1a; }
 
   .toggle-slider {
     position: absolute;
@@ -76,13 +95,21 @@
     left: 2px;
     height: calc(100% - 4px);
     width: calc(50% - 2px);
-    background: #1e1e1e;
     border-radius: 3px;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    border: 1px solid #2a2a2a;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                background 0.6s ease, border-color 0.6s ease;
   }
 
-  .toggle-slider.glass {
+  .mode-blackbox .toggle-slider {
+    background: #1e1e1e;
+    border: 1px solid #2a2a2a;
+  }
+  .mode-glass .toggle-slider {
+    background: #fff;
+    border: 1px solid #d8d7d5;
+  }
+
+  .toggle-slider.glass-pos {
     transform: translateX(100%);
   }
 
@@ -105,26 +132,25 @@
     line-height: 1.6;
     max-width: 280px;
     white-space: normal;
+    transition: color 0.8s ease;
   }
 
   .sentence-input {
     left: 0;
     text-align: left;
-    color: #888;
   }
+  .mode-blackbox .sentence-input { color: #666; }
+  .mode-glass .sentence-input { color: #888; }
 
   .sentence-output {
     right: 0;
     text-align: right;
-    color: #e0e0e0;
   }
+  .mode-blackbox .sentence-output { color: #e0e0e0; }
+  .mode-glass .sentence-output { color: #1a1a1a; }
 
-  /* Black box */
-  .black-box {
-    width: 160px;
-    height: 160px;
-    background: #0f0f0f;
-    border: 1px solid #1a1a1a;
+  /* Center box */
+  .center-box {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -132,14 +158,21 @@
     transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .black-box.glass-mode {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    width: 400px;
-    height: 240px;
+  .mode-blackbox .center-box {
+    width: 160px;
+    height: 160px;
+    background: #0f0f0f;
+    border: 1px solid #1a1a1a;
   }
 
-  /* Animated word tokens */
+  .mode-glass .center-box {
+    width: 400px;
+    height: 240px;
+    background: rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  /* Tokens for glass mode */
   .token {
     position: absolute;
     font-size: 14px;
@@ -158,10 +191,15 @@
     opacity: 0.4;
   }
 
-  .layer-syntax { color: #6b8aad; }
-  .layer-meaning { color: #ad8a6b; }
-  .layer-tone { color: #8aad6b; }
-  .layer-intent { color: #ad6b8a; }
+  .layer-syntax { color: #4a7a9b; }
+  .layer-meaning { color: #9b7a4a; }
+  .layer-tone { color: #6b9b5a; }
+  .layer-intent { color: #9b4a7a; }
+
+  .mode-blackbox .layer-syntax { color: #6b8aad; }
+  .mode-blackbox .layer-meaning { color: #ad8a6b; }
+  .mode-blackbox .layer-tone { color: #8aad6b; }
+  .mode-blackbox .layer-intent { color: #ad6b8a; }
 
   /* Processing indicator */
   .processing {
@@ -171,12 +209,14 @@
     transform: translate(-50%, -50%);
     font-size: 10px;
     letter-spacing: 0.2em;
-    color: #333;
     text-transform: uppercase;
     opacity: 0;
+    transition: color 0.8s ease;
   }
+  .mode-blackbox .processing { color: #333; }
+  .mode-glass .processing { color: #bbb; }
 
-  /* Traveling sentence fragment */
+  /* Traveler */
   .traveler {
     position: absolute;
     font-size: 15px;
@@ -185,27 +225,9 @@
     pointer-events: none;
     white-space: nowrap;
   }
-
-  /* Replay hint */
-  .hint {
-    position: fixed;
-    bottom: 24px;
-    left: 28px;
-    font-size: 10px;
-    color: #282828;
-    letter-spacing: 0.08em;
-  }
-
-  .hint span {
-    color: #3a3a3a;
-    border: 1px solid #222;
-    padding: 2px 6px;
-    border-radius: 3px;
-    margin-right: 4px;
-  }
 </style>
 </head>
-<body>
+<body class="mode-blackbox">
 
 <div class="toggle-container">
   <div class="toggle-track" id="toggle">
@@ -217,13 +239,12 @@
 
 <div class="stage" id="stage">
   <div class="sentence sentence-input" id="input-sentence"></div>
-  <div class="black-box" id="box"></div>
+  <div class="center-box" id="box"></div>
   <div class="processing" id="processing">processing</div>
   <div class="sentence sentence-output" id="output-sentence"></div>
 </div>
 
-<div class="hint"><span>Space</span> replay</div>
-<div class="wordmark">Glass</div>
+<div class="wordmark">Seaglass</div>
 
 <script>
 const INPUT = "Can you make this sound less aggressive and more like a professional request?";
@@ -240,14 +261,15 @@ const LAYERS = [
 ];
 
 let mode = 'blackbox';
-let animating = false;
+let loopRunning = false;
+let cancelRequested = false;
 let animationTimers = [];
 
 const $ = id => document.getElementById(id);
 const stage = $('stage');
 const box = $('box');
 
-function clearAnimation() {
+function clearElements() {
   animationTimers.forEach(t => clearTimeout(t));
   animationTimers = [];
   document.querySelectorAll('.token, .traveler').forEach(el => el.remove());
@@ -256,14 +278,16 @@ function clearAnimation() {
   $('output-sentence').textContent = '';
   $('output-sentence').style.opacity = '0';
   $('processing').style.opacity = '0';
-  box.className = 'black-box';
-  if (mode === 'glass') box.classList.add('glass-mode');
 }
 
 function delay(ms) {
   return new Promise(resolve => {
     animationTimers.push(setTimeout(resolve, ms));
   });
+}
+
+function checkCancel() {
+  if (cancelRequested) throw new Error('cancelled');
 }
 
 function animate(el, props, duration, easing = 'cubic-bezier(0.16, 1, 0.3, 1)') {
@@ -279,22 +303,21 @@ function animate(el, props, duration, easing = 'cubic-bezier(0.16, 1, 0.3, 1)') 
 }
 
 async function runBlackBox() {
-  animating = true;
-  clearAnimation();
+  clearElements();
   const input = $('input-sentence');
   const output = $('output-sentence');
 
   input.textContent = INPUT;
   input.style.opacity = '0';
-  await delay(200);
-  await animate(input, { opacity: '1' }, 600);
-  await delay(800);
+  await delay(200); checkCancel();
+  await animate(input, { opacity: '1' }, 600); checkCancel();
+  await delay(800); checkCancel();
 
   // Create traveler
   const traveler = document.createElement('div');
   traveler.className = 'traveler';
   traveler.textContent = INPUT;
-  traveler.style.color = '#888';
+  traveler.style.color = mode === 'blackbox' ? '#666' : '#888';
   const inputRect = input.getBoundingClientRect();
   const stageRect = stage.getBoundingClientRect();
   traveler.style.left = (inputRect.left - stageRect.left) + 'px';
@@ -312,21 +335,22 @@ async function runBlackBox() {
     top: targetY + 'px',
     opacity: '0',
     transform: 'scale(0.8)'
-  }, 900);
+  }, 900); checkCancel();
   traveler.remove();
 
   // Processing
   const proc = $('processing');
-  await animate(proc, { opacity: '1' }, 300);
-  await delay(1400);
-  await animate(proc, { opacity: '0' }, 300);
-  await delay(200);
+  await animate(proc, { opacity: '1' }, 300); checkCancel();
+  await delay(1400); checkCancel();
+  await animate(proc, { opacity: '0' }, 300); checkCancel();
+  await delay(200); checkCancel();
 
   // Output emerges
+  const outColor = mode === 'blackbox' ? '#e0e0e0' : '#1a1a1a';
   const outTraveler = document.createElement('div');
   outTraveler.className = 'traveler';
   outTraveler.textContent = OUTPUT;
-  outTraveler.style.color = '#e0e0e0';
+  outTraveler.style.color = outColor;
   const outTargetRect = output.getBoundingClientRect();
   outTraveler.style.left = (boxRect.right - stageRect.left + 10) + 'px';
   outTraveler.style.top = (boxRect.top - stageRect.top + boxRect.height / 2 - 10) + 'px';
@@ -339,27 +363,27 @@ async function runBlackBox() {
     top: (outTargetRect.top - stageRect.top) + 'px',
     opacity: '1',
     transform: 'scale(1)'
-  }, 900);
+  }, 900); checkCancel();
 
   outTraveler.remove();
   output.textContent = OUTPUT;
   output.style.opacity = '1';
-  await animate(output, { opacity: '1' }, 400);
+  await animate(output, { opacity: '1' }, 400); checkCancel();
 
-  animating = false;
+  // Hold the result visible
+  await delay(2000); checkCancel();
 }
 
 async function runGlass() {
-  animating = true;
-  clearAnimation();
+  clearElements();
   const input = $('input-sentence');
   const output = $('output-sentence');
 
   input.textContent = INPUT;
   input.style.opacity = '0';
-  await delay(200);
-  await animate(input, { opacity: '1' }, 600);
-  await delay(800);
+  await delay(200); checkCancel();
+  await animate(input, { opacity: '1' }, 600); checkCancel();
+  await delay(800); checkCancel();
 
   input.style.opacity = '0';
 
@@ -367,9 +391,7 @@ async function runGlass() {
   const boxRect = box.getBoundingClientRect();
   const inputRect = input.getBoundingClientRect();
 
-  // Create tokens that fly from input position into the glass box
   const tokens = [];
-  const boxCenterX = boxRect.left - stageRect.left + boxRect.width / 2;
   const boxCenterY = boxRect.top - stageRect.top + boxRect.height / 2;
   const startX = inputRect.left - stageRect.left;
   const startY = inputRect.top - stageRect.top;
@@ -385,7 +407,6 @@ async function runGlass() {
     tokens.push({ el: token, data: item, index: i });
   });
 
-  // Stagger tokens appearing and moving into the box
   const rows = LAYERS.length;
   const spacing = 32;
   const totalHeight = rows * spacing;
@@ -393,7 +414,7 @@ async function runGlass() {
 
   for (let i = 0; i < tokens.length; i++) {
     const t = tokens[i];
-    await delay(120);
+    await delay(120); checkCancel();
     t.el.style.opacity = '1';
     const targetX = boxRect.left - stageRect.left + 24;
     const targetY = topOffset + i * spacing;
@@ -404,9 +425,9 @@ async function runGlass() {
     }, 700);
   }
 
-  await delay(900);
+  await delay(900); checkCancel();
 
-  // Analyze phase — tokens shift slightly, labels brighten
+  // Analyze
   for (let i = 0; i < tokens.length; i++) {
     const t = tokens[i];
     const label = t.el.querySelector('.token-label');
@@ -414,23 +435,23 @@ async function runGlass() {
     animate(t.el, {
       left: (boxRect.left - stageRect.left + 20 + Math.sin(i * 1.2) * 15) + 'px'
     }, 500);
-    await delay(200);
+    await delay(200); checkCancel();
   }
 
-  await delay(600);
+  await delay(600); checkCancel();
 
-  // Transform phase — words change to output words
+  // Transform
   for (let i = 0; i < tokens.length; i++) {
     const t = tokens[i];
-    await animate(t.el, { opacity: '0.3', transform: 'scale(0.95)' }, 250);
+    await animate(t.el, { opacity: '0.3', transform: 'scale(0.95)' }, 250); checkCancel();
     t.el.innerHTML = `${t.data.newWord}<span class="token-label layer-${t.data.layer}" style="opacity:0.8">${t.data.label}</span>`;
-    await animate(t.el, { opacity: '1', transform: 'scale(1)' }, 250);
-    await delay(100);
+    await animate(t.el, { opacity: '1', transform: 'scale(1)' }, 250); checkCancel();
+    await delay(100); checkCancel();
   }
 
-  await delay(600);
+  await delay(600); checkCancel();
 
-  // Reassemble — tokens move toward output position
+  // Reassemble
   const outputRect = output.getBoundingClientRect();
   const outX = outputRect.right - stageRect.left;
   const outY = outputRect.top - stageRect.top;
@@ -442,55 +463,82 @@ async function runGlass() {
     animate(t.el, {
       left: (outX - 200) + 'px',
       top: (outY + i * 2) + 'px',
-      opacity: '0',
-      color: '#e0e0e0'
+      opacity: '0'
     }, 800);
-    await delay(80);
+    await delay(80); checkCancel();
   }
 
-  await delay(600);
+  await delay(600); checkCancel();
 
   tokens.forEach(t => t.el.remove());
   output.textContent = OUTPUT;
-  await animate(output, { opacity: '1' }, 500);
+  await animate(output, { opacity: '1' }, 500); checkCancel();
 
-  animating = false;
+  // Hold
+  await delay(2000); checkCancel();
 }
 
-function setMode(newMode) {
+function applyMode(newMode) {
   mode = newMode;
+  document.body.className = `mode-${mode}`;
   if (mode === 'glass') {
-    $('slider').classList.add('glass');
+    $('slider').classList.add('glass-pos');
     $('opt-blackbox').classList.remove('active');
     $('opt-glass').classList.add('active');
   } else {
-    $('slider').classList.remove('glass');
+    $('slider').classList.remove('glass-pos');
     $('opt-blackbox').classList.add('active');
     $('opt-glass').classList.remove('active');
   }
 }
 
-function play() {
-  if (animating) return;
-  if (mode === 'blackbox') runBlackBox();
-  else runGlass();
+async function loop() {
+  loopRunning = true;
+  while (true) {
+    cancelRequested = false;
+    try {
+      if (mode === 'blackbox') {
+        await runBlackBox();
+      } else {
+        await runGlass();
+      }
+    } catch (e) {
+      if (e.message === 'cancelled') {
+        clearElements();
+        continue;
+      }
+      break;
+    }
+  }
+  loopRunning = false;
 }
 
-$('toggle').addEventListener('click', () => {
-  if (animating) return;
-  setMode(mode === 'blackbox' ? 'glass' : 'blackbox');
-  play();
-});
+function switchMode() {
+  const newMode = mode === 'blackbox' ? 'glass' : 'blackbox';
+  cancelRequested = true;
+  animationTimers.forEach(t => clearTimeout(t));
+  animationTimers = [];
+  // Small delay to let cancel propagate, then apply new mode
+  setTimeout(() => {
+    applyMode(newMode);
+    clearElements();
+    cancelRequested = false;
+    if (!loopRunning) loop();
+  }, 50);
+}
+
+$('toggle').addEventListener('click', switchMode);
 
 document.addEventListener('keydown', (e) => {
   if (e.code === 'Space') {
     e.preventDefault();
-    play();
+    switchMode();
   }
 });
 
-// Auto-play on load
-setTimeout(play, 400);
+// Start
+applyMode('blackbox');
+setTimeout(loop, 400);
 </script>
 </body>
 </html>
