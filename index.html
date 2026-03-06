@@ -116,7 +116,7 @@
     transition: none;
   }
   .mode-blackbox .prompt { color: #666; }
-  .mode-glass .prompt { color: #888; }
+  .mode-glass .prompt { color: #555; }
 
   /* Center box */
   .center-box {
@@ -135,12 +135,12 @@
 
   .mode-glass .center-box {
     width: 460px; height: 340px;
-    background: rgba(0,0,0,0.015);
-    border: 1px solid rgba(0,0,0,0.06);
+    background: rgba(0,0,0,0.02);
+    border: 1px solid rgba(0,0,0,0.08);
     border-radius: 2px;
   }
 
-  /* Output artifact — mini rendered page */
+  /* Output artifact */
   .artifact {
     position: absolute;
     right: 0;
@@ -165,7 +165,6 @@
     box-shadow: 0 8px 32px rgba(0,0,0,0.08);
   }
 
-  /* Mini page internals */
   .artifact-nav {
     height: 28px;
     display: flex;
@@ -177,46 +176,31 @@
   .mode-blackbox .artifact-nav { background: #1a1a1a; border-bottom: 1px solid #222; }
   .mode-glass .artifact-nav { background: #fafafa; border-bottom: 1px solid #eee; }
 
-  .artifact-dot {
-    width: 5px; height: 5px;
-    border-radius: 50%;
-  }
+  .artifact-dot { width: 5px; height: 5px; border-radius: 50%; }
   .mode-blackbox .artifact-dot { background: #333; }
   .mode-glass .artifact-dot { background: #ccc; }
 
   .artifact-body { padding: 14px; }
 
-  .artifact-title {
-    height: 8px; width: 60%; border-radius: 2px; margin-bottom: 10px;
-  }
+  .artifact-title { height: 8px; width: 60%; border-radius: 2px; margin-bottom: 10px; }
   .mode-blackbox .artifact-title { background: #2a2a2a; }
   .mode-glass .artifact-title { background: #e0e0e0; }
 
-  .artifact-subtitle {
-    height: 5px; width: 40%; border-radius: 2px; margin-bottom: 16px;
-  }
+  .artifact-subtitle { height: 5px; width: 40%; border-radius: 2px; margin-bottom: 16px; }
   .mode-blackbox .artifact-subtitle { background: #1e1e1e; }
   .mode-glass .artifact-subtitle { background: #eee; }
 
-  .job-card {
-    border-radius: 4px; padding: 10px; margin-bottom: 8px;
-  }
+  .job-card { border-radius: 4px; padding: 10px; margin-bottom: 8px; }
   .mode-blackbox .job-card { background: #1a1a1a; border: 1px solid #222; }
   .mode-glass .job-card { background: #fafafa; border: 1px solid #eee; }
 
-  .job-card-title {
-    height: 5px; width: 70%; border-radius: 2px; margin-bottom: 6px;
-  }
+  .job-card-title { height: 5px; width: 70%; border-radius: 2px; margin-bottom: 6px; }
   .mode-blackbox .job-card-title { background: #333; }
   .mode-glass .job-card-title { background: #ddd; }
 
-  .job-card-meta {
-    display: flex; gap: 6px;
-  }
+  .job-card-meta { display: flex; gap: 6px; }
 
-  .job-tag {
-    height: 4px; border-radius: 2px;
-  }
+  .job-tag { height: 4px; border-radius: 2px; }
   .mode-blackbox .job-tag { background: #2a2a2a; }
   .mode-glass .job-tag { background: #e8e8e8; }
 
@@ -233,10 +217,10 @@
   .mode-blackbox .processing { color: #333; }
   .mode-glass .processing { color: #bbb; }
 
-  /* Glass process tokens */
+  /* Glass process steps */
   .process-step {
     position: absolute;
-    font-size: 11px;
+    font-size: 12px;
     font-weight: 300;
     opacity: 0;
     pointer-events: none;
@@ -244,37 +228,27 @@
   }
 
   .step-label {
-    font-size: 9px;
-    letter-spacing: 0.1em;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     display: block;
-    margin-bottom: 4px;
-    opacity: 0.5;
+    margin-bottom: 5px;
   }
 
   .step-content {
-    font-size: 10px;
+    font-size: 11px;
     line-height: 1.5;
-    opacity: 0.8;
   }
 
-  .step-layout .step-label { color: #5a8a9b; }
-  .step-components .step-label { color: #9b7a4a; }
-  .step-data .step-label { color: #6b9b5a; }
-  .step-styles .step-label { color: #9b4a7a; }
-  .step-logic .step-label { color: #7a6b9b; }
+  .step-layout .step-label { color: #3a7a8c; }
+  .step-components .step-label { color: #8c6a3a; }
+  .step-data .step-label { color: #4a8c3a; }
+  .step-styles .step-label { color: #8c3a6a; }
+  .step-logic .step-label { color: #5a4a8c; }
 
-  .mode-blackbox .step-content { color: #888; }
-  .mode-glass .step-content { color: #666; }
-
-  /* Mini wireframe inside glass */
-  .wire-element {
-    position: absolute;
-    opacity: 0;
-    pointer-events: none;
-    border-radius: 2px;
-    transition: none;
-  }
+  .mode-glass .step-content { color: #444; }
+  .mode-blackbox .step-content { color: #999; }
 
   /* Traveler */
   .traveler {
@@ -370,7 +344,7 @@ const PROCESS_STEPS = [
   {
     cls: 'step-styles',
     label: 'styling',
-    content: 'card: border-radius 8px, subtle shadow, hover lift · chips: pill shape, muted fill',
+    content: 'card: border-radius 8px, subtle shadow, hover lift · chips: pill, muted fill',
   },
   {
     cls: 'step-logic',
@@ -380,20 +354,17 @@ const PROCESS_STEPS = [
 ];
 
 let mode = 'blackbox';
-let loopRunning = false;
-let cancelRequested = false;
-let timers = [];
+let runId = 0; // incremented on each switch to cancel previous run
 
 const $ = id => document.getElementById(id);
 const stage = $('stage');
 
 function clearAll() {
-  timers.forEach(t => clearTimeout(t));
-  timers = [];
-  document.querySelectorAll('.process-step, .traveler, .wire-element').forEach(el => el.remove());
+  document.querySelectorAll('.process-step, .traveler').forEach(el => el.remove());
   $('prompt').textContent = '';
   $('prompt').style.opacity = '0';
   $('prompt').style.transform = '';
+  $('prompt').style.transition = 'none';
   $('artifact').style.opacity = '0';
   $('artifact').style.transform = 'scale(0.95)';
   $('artifact').style.transition = 'none';
@@ -401,23 +372,30 @@ function clearAll() {
   $('processing').style.transition = 'none';
 }
 
-function delay(ms) {
-  return new Promise(r => { timers.push(setTimeout(r, ms)); });
+function wait(ms, id) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (runId !== id) reject('cancelled');
+      else resolve();
+    }, ms);
+  });
 }
 
-function check() { if (cancelRequested) throw new Error('x'); }
-
-function anim(el, props, dur, ease = 'cubic-bezier(0.16, 1, 0.3, 1)') {
-  return new Promise(r => {
+function anim(el, props, dur, id, ease = 'cubic-bezier(0.16, 1, 0.3, 1)') {
+  return new Promise((resolve, reject) => {
     el.style.transition = `all ${dur}ms ${ease}`;
     requestAnimationFrame(() => requestAnimationFrame(() => {
+      if (runId !== id) { reject('cancelled'); return; }
       Object.assign(el.style, props);
-      timers.push(setTimeout(r, dur));
+      setTimeout(() => {
+        if (runId !== id) reject('cancelled');
+        else resolve();
+      }, dur);
     }));
   });
 }
 
-async function runBlackBox() {
+async function runBlackBox(id) {
   clearAll();
   const prompt = $('prompt');
   const artifact = $('artifact');
@@ -426,11 +404,11 @@ async function runBlackBox() {
 
   // Show prompt
   prompt.textContent = PROMPT_TEXT;
-  await delay(100); check();
-  await anim(prompt, { opacity: '1' }, 600); check();
-  await delay(900); check();
+  await wait(200, id);
+  await anim(prompt, { opacity: '1' }, 800, id);
+  await wait(1200, id);
 
-  // Prompt travels to box
+  // Prompt travels slowly toward the box
   const stageRect = stage.getBoundingClientRect();
   const promptRect = prompt.getBoundingClientRect();
   const boxRect = box.getBoundingClientRect();
@@ -446,38 +424,45 @@ async function runBlackBox() {
   stage.appendChild(traveler);
   prompt.style.opacity = '0';
 
+  const boxCenterX = boxRect.left - stageRect.left + boxRect.width / 2 - 120;
+  const boxCenterY = boxRect.top - stageRect.top + boxRect.height / 2 - 20;
+
+  // Slow, smooth glide toward the box
   await anim(traveler, {
-    left: (boxRect.left - stageRect.left) + 'px',
-    top: (boxRect.top - stageRect.top + boxRect.height / 2 - 20) + 'px',
+    left: boxCenterX + 'px',
+    top: boxCenterY + 'px',
+    opacity: '0.4',
+  }, 1800, id, 'cubic-bezier(0.25, 0.1, 0.25, 1)');
+
+  // Final absorption into the box
+  await anim(traveler, {
+    left: (boxRect.left - stageRect.left + boxRect.width / 2 - 40) + 'px',
+    top: (boxRect.top - stageRect.top + boxRect.height / 2 - 10) + 'px',
     opacity: '0',
-    transform: 'scale(0.7)'
-  }, 1000); check();
+    transform: 'scale(0.85)',
+  }, 800, id, 'cubic-bezier(0.4, 0, 1, 1)');
   traveler.remove();
 
   // Processing
-  await anim(proc, { opacity: '1' }, 300); check();
-
-  // Pulsing dots
+  await anim(proc, { opacity: '1' }, 400, id);
   const dots = ['', '.', '..', '...'];
   for (let i = 0; i < 6; i++) {
     proc.textContent = 'processing' + dots[i % 4];
-    await delay(350); check();
+    await wait(400, id);
   }
-
-  await anim(proc, { opacity: '0' }, 300); check();
-  await delay(200); check();
+  await anim(proc, { opacity: '0' }, 400, id);
+  await wait(300, id);
 
   // Artifact appears
-  await anim(artifact, { opacity: '1', transform: 'scale(1)' }, 700); check();
+  await anim(artifact, { opacity: '1', transform: 'scale(1)' }, 800, id);
+  await wait(2800, id);
 
-  await delay(2500); check();
-
-  // Fade out artifact
-  await anim(artifact, { opacity: '0', transform: 'scale(0.95)' }, 500); check();
-  await delay(400); check();
+  // Fade out
+  await anim(artifact, { opacity: '0', transform: 'scale(0.95)' }, 600, id);
+  await wait(500, id);
 }
 
-async function runGlass() {
+async function runGlass(id) {
   clearAll();
   const prompt = $('prompt');
   const artifact = $('artifact');
@@ -485,84 +470,107 @@ async function runGlass() {
 
   // Show prompt
   prompt.textContent = PROMPT_TEXT;
-  await delay(100); check();
-  await anim(prompt, { opacity: '1' }, 600); check();
-  await delay(700); check();
+  await wait(200, id);
+  await anim(prompt, { opacity: '1' }, 800, id);
+  await wait(1000, id);
 
-  // Prompt fades as it enters the glass
-  await anim(prompt, { opacity: '0' }, 400); check();
-
+  // Prompt glides toward the glass box and fades
   const stageRect = stage.getBoundingClientRect();
+  const promptRect = prompt.getBoundingClientRect();
   const boxRect = box.getBoundingClientRect();
+
+  const traveler = document.createElement('div');
+  traveler.className = 'traveler';
+  traveler.textContent = PROMPT_TEXT;
+  traveler.style.color = '#555';
+  traveler.style.left = (promptRect.left - stageRect.left) + 'px';
+  traveler.style.top = (promptRect.top - stageRect.top) + 'px';
+  traveler.style.maxWidth = '240px';
+  traveler.style.opacity = '1';
+  stage.appendChild(traveler);
+  prompt.style.opacity = '0';
+
   const boxLeft = boxRect.left - stageRect.left;
   const boxTop = boxRect.top - stageRect.top;
   const boxW = boxRect.width;
   const boxH = boxRect.height;
 
-  // Process steps appear inside the glass box
+  // Slow glide into the glass
+  await anim(traveler, {
+    left: (boxLeft + 20) + 'px',
+    top: (boxTop + 14) + 'px',
+    opacity: '0.3',
+  }, 1600, id, 'cubic-bezier(0.25, 0.1, 0.25, 1)');
+
+  await anim(traveler, { opacity: '0' }, 400, id);
+  traveler.remove();
+
+  await wait(300, id);
+
+  // Process steps appear inside the glass box, staggered
   const stepEls = [];
-  const stepH = 54;
+  const stepH = 58;
   const totalH = PROCESS_STEPS.length * stepH;
-  const startY = boxTop + (boxH - totalH) / 2;
+  const startY = boxTop + (boxH - totalH) / 2 + 10;
 
   for (let i = 0; i < PROCESS_STEPS.length; i++) {
     const s = PROCESS_STEPS[i];
     const el = document.createElement('div');
     el.className = `process-step ${s.cls}`;
     el.innerHTML = `<span class="step-label">${s.label}</span><span class="step-content">${s.content}</span>`;
-    el.style.left = (boxLeft + 20) + 'px';
+    el.style.left = (boxLeft + 24) + 'px';
     el.style.top = (startY + i * stepH) + 'px';
-    el.style.maxWidth = (boxW - 40) + 'px';
+    el.style.maxWidth = (boxW - 48) + 'px';
+    el.style.transform = 'translateY(8px)';
     stage.appendChild(el);
     stepEls.push(el);
 
-    await delay(180); check();
-    await anim(el, { opacity: '1' }, 400); check();
+    await wait(250, id);
+    await anim(el, { opacity: '1', transform: 'translateY(0)' }, 500, id);
   }
 
-  await delay(500); check();
+  await wait(600, id);
 
-  // Each step "processes" — brief highlight then dims
+  // Each step highlights in sequence
   for (let i = 0; i < stepEls.length; i++) {
     const el = stepEls[i];
     const label = el.querySelector('.step-label');
     const content = el.querySelector('.step-content');
 
-    // Highlight
-    await anim(el, { transform: 'translateX(4px)' }, 300); check();
+    // Highlight active step
+    await anim(el, { transform: 'translateX(6px)' }, 350, id);
     if (content) content.style.opacity = '1';
     if (label) label.style.opacity = '1';
-    await delay(600); check();
+    await wait(700, id);
 
     // Dim after processing
-    await anim(el, { transform: 'translateX(0)', opacity: '0.4' }, 300); check();
-    await delay(100); check();
+    await anim(el, { transform: 'translateX(0)', opacity: '0.35' }, 350, id);
+    await wait(150, id);
   }
 
-  await delay(300); check();
+  await wait(400, id);
 
-  // Steps converge and fade
+  // Steps converge toward center and fade
   for (let i = 0; i < stepEls.length; i++) {
     const el = stepEls[i];
     anim(el, {
       top: (boxTop + boxH / 2 - 10) + 'px',
       opacity: '0',
       transform: 'scale(0.9)'
-    }, 600);
-    await delay(80); check();
+    }, 700, id).catch(() => {});
+    await wait(100, id);
   }
 
-  await delay(700); check();
+  await wait(800, id);
   stepEls.forEach(el => el.remove());
 
   // Artifact materializes
-  await anim(artifact, { opacity: '1', transform: 'scale(1)' }, 700); check();
-
-  await delay(2500); check();
+  await anim(artifact, { opacity: '1', transform: 'scale(1)' }, 800, id);
+  await wait(2800, id);
 
   // Fade out
-  await anim(artifact, { opacity: '0', transform: 'scale(0.95)' }, 500); check();
-  await delay(400); check();
+  await anim(artifact, { opacity: '0', transform: 'scale(0.95)' }, 600, id);
+  await wait(500, id);
 }
 
 function applyMode(m) {
@@ -579,32 +587,27 @@ function applyMode(m) {
   }
 }
 
-async function loop() {
-  loopRunning = true;
-  while (true) {
-    cancelRequested = false;
+async function loop(id) {
+  while (runId === id) {
     try {
-      if (mode === 'blackbox') await runBlackBox();
-      else await runGlass();
+      if (mode === 'blackbox') await runBlackBox(id);
+      else await runGlass(id);
     } catch (e) {
-      if (e.message === 'x') { clearAll(); continue; }
-      break;
+      break; // cancelled — a new loop will be started
     }
   }
-  loopRunning = false;
 }
 
 function switchMode() {
   const next = mode === 'blackbox' ? 'glass' : 'blackbox';
-  cancelRequested = true;
-  timers.forEach(t => clearTimeout(t));
-  timers = [];
+  runId++; // invalidates all pending waits/anims
+  applyMode(next);
+  clearAll();
+  // Let the CSS transition settle, then start
+  const id = runId;
   setTimeout(() => {
-    applyMode(next);
-    clearAll();
-    cancelRequested = false;
-    if (!loopRunning) loop();
-  }, 50);
+    if (runId === id) loop(id);
+  }, 100);
 }
 
 $('toggle').addEventListener('click', switchMode);
@@ -613,7 +616,8 @@ document.addEventListener('keydown', e => {
 });
 
 applyMode('blackbox');
-setTimeout(loop, 400);
+const startId = runId;
+setTimeout(() => { if (runId === startId) loop(startId); }, 400);
 </script>
 </body>
 </html>
