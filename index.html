@@ -44,7 +44,6 @@
   .mode-blackbox .wordmark { color: #282828; }
   .mode-glass .wordmark { color: #ccc; }
 
-  /* Toggle */
   .toggle-container {
     margin-bottom: 48px;
     user-select: none;
@@ -104,7 +103,6 @@
     justify-content: center;
   }
 
-  /* Prompt */
   .prompt {
     position: absolute;
     left: 0;
@@ -140,8 +138,8 @@
     border-radius: 2px;
   }
 
-  /* Output artifact */
-  .artifact {
+  /* Black box artifact — monochrome */
+  .artifact-bb {
     position: absolute;
     right: 0;
     width: 260px;
@@ -151,60 +149,88 @@
     opacity: 0;
     transform: scale(0.95);
     transition: none;
-  }
-
-  .mode-blackbox .artifact {
     background: #111;
     border: 1px solid #222;
     box-shadow: 0 8px 32px rgba(0,0,0,0.4);
   }
 
-  .mode-glass .artifact {
+  .artifact-bb .ab-nav {
+    height: 28px; display: flex; align-items: center; padding: 0 10px; gap: 6px;
+    background: #1a1a1a; border-bottom: 1px solid #222;
+  }
+  .artifact-bb .ab-dot { width: 5px; height: 5px; border-radius: 50%; background: #333; }
+  .artifact-bb .ab-body { padding: 14px; }
+  .artifact-bb .ab-title { height: 8px; width: 60%; border-radius: 2px; margin-bottom: 10px; background: #2a2a2a; }
+  .artifact-bb .ab-subtitle { height: 5px; width: 40%; border-radius: 2px; margin-bottom: 16px; background: #1e1e1e; }
+  .artifact-bb .ab-card { border-radius: 4px; padding: 10px; margin-bottom: 8px; background: #1a1a1a; border: 1px solid #222; }
+  .artifact-bb .ab-card-title { height: 5px; width: 70%; border-radius: 2px; margin-bottom: 6px; background: #333; }
+  .artifact-bb .ab-card-meta { display: flex; gap: 6px; }
+  .artifact-bb .ab-tag { height: 4px; border-radius: 2px; background: #2a2a2a; }
+
+  /* Glass artifact — colorful */
+  .artifact-glass {
+    position: absolute;
+    right: 0;
+    width: 260px;
+    height: 320px;
+    border-radius: 8px;
+    overflow: hidden;
+    opacity: 0;
+    transform: scale(0.95);
+    transition: none;
     background: #fff;
-    border: 1px solid #e0e0e0;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+    border: 1px solid #e2e2e2;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.1);
   }
 
-  .artifact-nav {
-    height: 28px;
-    display: flex;
-    align-items: center;
-    padding: 0 10px;
-    gap: 6px;
+  .artifact-glass .ag-nav {
+    height: 32px; display: flex; align-items: center; padding: 0 10px; gap: 6px;
+    background: #4a6cf7; border-bottom: none;
   }
+  .artifact-glass .ag-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.4); }
+  .artifact-glass .ag-nav-title {
+    font-size: 8px; color: rgba(255,255,255,0.9); letter-spacing: 0.08em;
+    margin-left: 6px; text-transform: uppercase;
+  }
+  .artifact-glass .ag-body { padding: 14px; }
+  .artifact-glass .ag-search {
+    height: 22px; border-radius: 4px; margin-bottom: 10px;
+    background: #f5f5f7; border: 1px solid #e0e0e0;
+    display: flex; align-items: center; padding: 0 8px;
+  }
+  .artifact-glass .ag-search-icon {
+    width: 8px; height: 8px; border: 1.5px solid #bbb; border-radius: 50%; margin-right: 6px;
+  }
+  .artifact-glass .ag-search-text { height: 3px; width: 40px; background: #ddd; border-radius: 2px; }
+  .artifact-glass .ag-filters { display: flex; gap: 5px; margin-bottom: 12px; }
+  .artifact-glass .ag-filter {
+    height: 16px; border-radius: 10px; padding: 0 8px;
+    display: flex; align-items: center;
+    font-size: 6px; letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  .artifact-glass .ag-filter-active { background: #4a6cf7; color: #fff; }
+  .artifact-glass .ag-filter-inactive { background: #f0f0f2; color: #888; }
+  .artifact-glass .ag-card {
+    border-radius: 6px; padding: 10px; margin-bottom: 7px;
+    background: #fff; border: 1px solid #eee;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .artifact-glass .ag-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+  .artifact-glass .ag-card-title { height: 5px; border-radius: 2px; background: #333; }
+  .artifact-glass .ag-card-salary { font-size: 7px; color: #4a6cf7; font-weight: 500; white-space: nowrap; }
+  .artifact-glass .ag-card-company { height: 3px; width: 50%; border-radius: 2px; background: #ccc; margin-bottom: 6px; }
+  .artifact-glass .ag-card-tags { display: flex; gap: 4px; }
+  .artifact-glass .ag-card-tag {
+    height: 12px; border-radius: 3px; padding: 0 5px;
+    display: flex; align-items: center;
+    font-size: 6px;
+  }
+  .ag-tag-green { background: #e8f5e9; color: #388e3c; }
+  .ag-tag-blue { background: #e3f2fd; color: #1976d2; }
+  .ag-tag-orange { background: #fff3e0; color: #f57c00; }
+  .ag-tag-purple { background: #f3e5f5; color: #7b1fa2; }
 
-  .mode-blackbox .artifact-nav { background: #1a1a1a; border-bottom: 1px solid #222; }
-  .mode-glass .artifact-nav { background: #fafafa; border-bottom: 1px solid #eee; }
-
-  .artifact-dot { width: 5px; height: 5px; border-radius: 50%; }
-  .mode-blackbox .artifact-dot { background: #333; }
-  .mode-glass .artifact-dot { background: #ccc; }
-
-  .artifact-body { padding: 14px; }
-
-  .artifact-title { height: 8px; width: 60%; border-radius: 2px; margin-bottom: 10px; }
-  .mode-blackbox .artifact-title { background: #2a2a2a; }
-  .mode-glass .artifact-title { background: #e0e0e0; }
-
-  .artifact-subtitle { height: 5px; width: 40%; border-radius: 2px; margin-bottom: 16px; }
-  .mode-blackbox .artifact-subtitle { background: #1e1e1e; }
-  .mode-glass .artifact-subtitle { background: #eee; }
-
-  .job-card { border-radius: 4px; padding: 10px; margin-bottom: 8px; }
-  .mode-blackbox .job-card { background: #1a1a1a; border: 1px solid #222; }
-  .mode-glass .job-card { background: #fafafa; border: 1px solid #eee; }
-
-  .job-card-title { height: 5px; width: 70%; border-radius: 2px; margin-bottom: 6px; }
-  .mode-blackbox .job-card-title { background: #333; }
-  .mode-glass .job-card-title { background: #ddd; }
-
-  .job-card-meta { display: flex; gap: 6px; }
-
-  .job-tag { height: 4px; border-radius: 2px; }
-  .mode-blackbox .job-tag { background: #2a2a2a; }
-  .mode-glass .job-tag { background: #e8e8e8; }
-
-  /* Processing text */
+  /* Processing */
   .processing {
     position: absolute;
     left: 50%; top: 50%;
@@ -217,7 +243,7 @@
   .mode-blackbox .processing { color: #333; }
   .mode-glass .processing { color: #bbb; }
 
-  /* Glass process steps */
+  /* Process steps */
   .process-step {
     position: absolute;
     font-size: 12px;
@@ -239,6 +265,7 @@
   .step-content {
     font-size: 11px;
     line-height: 1.5;
+    color: #444;
   }
 
   .step-layout .step-label { color: #3a7a8c; }
@@ -247,8 +274,89 @@
   .step-styles .step-label { color: #8c3a6a; }
   .step-logic .step-label { color: #5a4a8c; }
 
-  .mode-glass .step-content { color: #444; }
-  .mode-blackbox .step-content { color: #999; }
+  /* Code editor zoom panel */
+  .code-panel {
+    position: absolute;
+    border-radius: 6px;
+    overflow: hidden;
+    opacity: 0;
+    transition: none;
+    pointer-events: none;
+    background: #1e1e2e;
+    border: 1px solid #313148;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.15);
+  }
+
+  .code-panel-nav {
+    height: 24px;
+    background: #16162a;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    gap: 5px;
+  }
+
+  .code-panel-dot { width: 4px; height: 4px; border-radius: 50%; }
+  .code-panel-tab {
+    font-size: 8px;
+    color: #888;
+    margin-left: 8px;
+    letter-spacing: 0.04em;
+  }
+
+  .code-panel-body {
+    padding: 12px 14px;
+    font-size: 10px;
+    line-height: 1.8;
+    color: #ccc;
+    white-space: pre;
+    overflow: hidden;
+  }
+
+  .code-panel-body .ck { color: #c678dd; }
+  .code-panel-body .cn { color: #e5c07b; }
+  .code-panel-body .cs { color: #98c379; }
+  .code-panel-body .cp { color: #56b6c2; }
+  .code-panel-body .cc { color: #636a7a; }
+  .code-panel-body .cb { color: #61afef; }
+
+  .code-cursor {
+    display: inline-block;
+    width: 1px;
+    height: 12px;
+    background: #528bff;
+    animation: blink 1s step-end infinite;
+    vertical-align: text-bottom;
+    margin-left: 1px;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  .edit-prompt {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 32px;
+    background: #252540;
+    border-top: 1px solid #313148;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    font-size: 9px;
+    color: #7a7a9a;
+    opacity: 0;
+    transition: none;
+  }
+
+  .edit-prompt-caret {
+    color: #4a6cf7;
+    margin-right: 6px;
+    font-weight: 500;
+  }
 
   /* Traveler */
   .traveler {
@@ -277,44 +385,47 @@
   <div class="center-box" id="box"></div>
   <div class="processing" id="processing">processing</div>
 
-  <div class="artifact" id="artifact">
-    <div class="artifact-nav">
-      <div class="artifact-dot"></div>
-      <div class="artifact-dot"></div>
-      <div class="artifact-dot"></div>
+  <!-- Black box artifact (monochrome) -->
+  <div class="artifact-bb" id="artifact-bb">
+    <div class="ab-nav"><div class="ab-dot"></div><div class="ab-dot"></div><div class="ab-dot"></div></div>
+    <div class="ab-body">
+      <div class="ab-title"></div>
+      <div class="ab-subtitle"></div>
+      <div class="ab-card"><div class="ab-card-title"></div><div class="ab-card-meta"><div class="ab-tag" style="width:30px"></div><div class="ab-tag" style="width:40px"></div><div class="ab-tag" style="width:25px"></div></div></div>
+      <div class="ab-card"><div class="ab-card-title" style="width:55%"></div><div class="ab-card-meta"><div class="ab-tag" style="width:35px"></div><div class="ab-tag" style="width:28px"></div></div></div>
+      <div class="ab-card"><div class="ab-card-title" style="width:65%"></div><div class="ab-card-meta"><div class="ab-tag" style="width:25px"></div><div class="ab-tag" style="width:45px"></div><div class="ab-tag" style="width:30px"></div></div></div>
+      <div class="ab-card"><div class="ab-card-title" style="width:50%"></div><div class="ab-card-meta"><div class="ab-tag" style="width:38px"></div><div class="ab-tag" style="width:32px"></div></div></div>
     </div>
-    <div class="artifact-body">
-      <div class="artifact-title"></div>
-      <div class="artifact-subtitle"></div>
-      <div class="job-card">
-        <div class="job-card-title"></div>
-        <div class="job-card-meta">
-          <div class="job-tag" style="width:30px"></div>
-          <div class="job-tag" style="width:40px"></div>
-          <div class="job-tag" style="width:25px"></div>
-        </div>
+  </div>
+
+  <!-- Glass artifact (colorful) -->
+  <div class="artifact-glass" id="artifact-glass">
+    <div class="ag-nav">
+      <div class="ag-dot"></div><div class="ag-dot"></div><div class="ag-dot"></div>
+      <span class="ag-nav-title">careers</span>
+    </div>
+    <div class="ag-body">
+      <div class="ag-search"><div class="ag-search-icon"></div><div class="ag-search-text"></div></div>
+      <div class="ag-filters">
+        <div class="ag-filter ag-filter-active">All</div>
+        <div class="ag-filter ag-filter-inactive">Engineering</div>
+        <div class="ag-filter ag-filter-inactive">Design</div>
+        <div class="ag-filter ag-filter-inactive">Remote</div>
       </div>
-      <div class="job-card">
-        <div class="job-card-title" style="width:55%"></div>
-        <div class="job-card-meta">
-          <div class="job-tag" style="width:35px"></div>
-          <div class="job-tag" style="width:28px"></div>
-        </div>
+      <div class="ag-card">
+        <div class="ag-card-header"><div class="ag-card-title" style="width:55%"></div><div class="ag-card-salary">$140–180k</div></div>
+        <div class="ag-card-company"></div>
+        <div class="ag-card-tags"><div class="ag-card-tag ag-tag-green">Full-time</div><div class="ag-card-tag ag-tag-blue">Remote</div><div class="ag-card-tag ag-tag-purple">React</div></div>
       </div>
-      <div class="job-card">
-        <div class="job-card-title" style="width:65%"></div>
-        <div class="job-card-meta">
-          <div class="job-tag" style="width:25px"></div>
-          <div class="job-tag" style="width:45px"></div>
-          <div class="job-tag" style="width:30px"></div>
-        </div>
+      <div class="ag-card">
+        <div class="ag-card-header"><div class="ag-card-title" style="width:48%"></div><div class="ag-card-salary">$120–160k</div></div>
+        <div class="ag-card-company" style="width:40%"></div>
+        <div class="ag-card-tags"><div class="ag-card-tag ag-tag-green">Full-time</div><div class="ag-card-tag ag-tag-orange">Hybrid</div></div>
       </div>
-      <div class="job-card">
-        <div class="job-card-title" style="width:50%"></div>
-        <div class="job-card-meta">
-          <div class="job-tag" style="width:38px"></div>
-          <div class="job-tag" style="width:32px"></div>
-        </div>
+      <div class="ag-card">
+        <div class="ag-card-header"><div class="ag-card-title" style="width:62%"></div><div class="ag-card-salary">$150–200k</div></div>
+        <div class="ag-card-company" style="width:55%"></div>
+        <div class="ag-card-tags"><div class="ag-card-tag ag-tag-blue">Remote</div><div class="ag-card-tag ag-tag-purple">TypeScript</div><div class="ag-card-tag ag-tag-green">Senior</div></div>
       </div>
     </div>
   </div>
@@ -326,58 +437,71 @@
 const PROMPT_TEXT = "Build me a jobs page with search, filters, and card-based listings";
 
 const PROCESS_STEPS = [
-  {
-    cls: 'step-layout',
-    label: 'layout',
-    content: 'header → search bar → filter row → card grid (2-col, responsive)',
-  },
-  {
-    cls: 'step-components',
-    label: 'components',
-    content: 'SearchInput, FilterChip[], JobCard { title, company, tags[], posted }',
-  },
-  {
-    cls: 'step-data',
-    label: 'data model',
-    content: 'Job { id, title, company, location, type, salary_range, posted_at }',
-  },
-  {
-    cls: 'step-styles',
-    label: 'styling',
-    content: 'card: border-radius 8px, subtle shadow, hover lift · chips: pill, muted fill',
-  },
-  {
-    cls: 'step-logic',
-    label: 'interactions',
-    content: 'debounced search → filter state → sorted results → paginated render',
-  },
+  { cls: 'step-layout', label: 'layout', content: 'header → search bar → filter row → card grid (2-col, responsive)' },
+  { cls: 'step-components', label: 'components', content: 'SearchInput, FilterChip[], JobCard { title, company, tags[], posted }' },
+  { cls: 'step-data', label: 'data model', content: 'Job { id, title, company, location, type, salary_range, posted_at }' },
+  { cls: 'step-styles', label: 'styling', content: 'card: border-radius 8px, subtle shadow, hover lift · chips: pill, muted fill' },
+  { cls: 'step-logic', label: 'interactions', content: 'debounced search → filter state → sorted results → paginated render' },
+];
+
+const CODE_LINES = [
+  { text: 'interface ', cls: '' },
+  { text: 'Job', cls: 'cn' },
+  { text: ' {', cls: '' },
+  { text: '\n  id: ', cls: '' },
+  { text: 'string', cls: 'cp' },
+  { text: ';', cls: '' },
+  { text: '\n  title: ', cls: '' },
+  { text: 'string', cls: 'cp' },
+  { text: ';', cls: '' },
+  { text: '\n  company: ', cls: '' },
+  { text: 'string', cls: 'cp' },
+  { text: ';', cls: '' },
+  { text: '\n  location: ', cls: '' },
+  { text: 'string', cls: 'cp' },
+  { text: ';', cls: '' },
+  { text: '\n  type: ', cls: '' },
+  { text: '"full-time"', cls: 'cs' },
+  { text: ' | ', cls: '' },
+  { text: '"contract"', cls: 'cs' },
+  { text: ';', cls: '' },
+  { text: '\n  salary: ', cls: '' },
+  { text: '{ min: ', cls: '' },
+  { text: 'number', cls: 'cp' },
+  { text: ', max: ', cls: '' },
+  { text: 'number', cls: 'cp' },
+  { text: ' };', cls: '' },
+  { text: '\n  posted_at: ', cls: '' },
+  { text: 'Date', cls: 'cn' },
+  { text: ';', cls: '' },
+  { text: '\n}', cls: '' },
 ];
 
 let mode = 'blackbox';
-let runId = 0; // incremented on each switch to cancel previous run
+let runId = 0;
 
 const $ = id => document.getElementById(id);
 const stage = $('stage');
 
 function clearAll() {
-  document.querySelectorAll('.process-step, .traveler').forEach(el => el.remove());
+  document.querySelectorAll('.process-step, .traveler, .code-panel').forEach(el => el.remove());
   $('prompt').textContent = '';
   $('prompt').style.opacity = '0';
   $('prompt').style.transform = '';
   $('prompt').style.transition = 'none';
-  $('artifact').style.opacity = '0';
-  $('artifact').style.transform = 'scale(0.95)';
-  $('artifact').style.transition = 'none';
+  $('artifact-bb').style.opacity = '0';
+  $('artifact-bb').style.transform = 'scale(0.95)';
+  $('artifact-bb').style.transition = 'none';
+  $('artifact-glass').style.opacity = '0';
+  $('artifact-glass').style.transform = 'scale(0.95)';
+  $('artifact-glass').style.transition = 'none';
   $('processing').style.opacity = '0';
   $('processing').style.transition = 'none';
 }
 
 function wait(ms, id) {
   return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (runId !== id) reject('cancelled');
-      else resolve();
-    }, ms);
+    setTimeout(() => { runId !== id ? reject('x') : resolve(); }, ms);
   });
 }
 
@@ -385,30 +509,46 @@ function anim(el, props, dur, id, ease = 'cubic-bezier(0.16, 1, 0.3, 1)') {
   return new Promise((resolve, reject) => {
     el.style.transition = `all ${dur}ms ${ease}`;
     requestAnimationFrame(() => requestAnimationFrame(() => {
-      if (runId !== id) { reject('cancelled'); return; }
+      if (runId !== id) { reject('x'); return; }
       Object.assign(el.style, props);
-      setTimeout(() => {
-        if (runId !== id) reject('cancelled');
-        else resolve();
-      }, dur);
+      setTimeout(() => { runId !== id ? reject('x') : resolve(); }, dur);
     }));
   });
+}
+
+async function typeCode(container, id) {
+  const body = container.querySelector('.code-panel-body');
+  body.innerHTML = '<span class="code-cursor"></span>';
+  for (const seg of CODE_LINES) {
+    for (let i = 0; i < seg.text.length; i++) {
+      if (runId !== id) return;
+      const cursor = body.querySelector('.code-cursor');
+      const span = document.createElement('span');
+      if (seg.cls) span.className = seg.cls;
+      const ch = seg.text[i];
+      span.textContent = ch;
+      body.insertBefore(span, cursor);
+      await wait(18 + Math.random() * 25, id);
+    }
+  }
+  // Remove cursor after done
+  await wait(400, id);
+  const cursor = body.querySelector('.code-cursor');
+  if (cursor) cursor.remove();
 }
 
 async function runBlackBox(id) {
   clearAll();
   const prompt = $('prompt');
-  const artifact = $('artifact');
+  const artifact = $('artifact-bb');
   const box = $('box');
   const proc = $('processing');
 
-  // Show prompt
   prompt.textContent = PROMPT_TEXT;
   await wait(200, id);
   await anim(prompt, { opacity: '1' }, 800, id);
   await wait(1200, id);
 
-  // Prompt travels slowly toward the box
   const stageRect = stage.getBoundingClientRect();
   const promptRect = prompt.getBoundingClientRect();
   const boxRect = box.getBoundingClientRect();
@@ -424,26 +564,20 @@ async function runBlackBox(id) {
   stage.appendChild(traveler);
   prompt.style.opacity = '0';
 
-  const boxCenterX = boxRect.left - stageRect.left + boxRect.width / 2 - 120;
-  const boxCenterY = boxRect.top - stageRect.top + boxRect.height / 2 - 20;
+  const boxCX = boxRect.left - stageRect.left + boxRect.width / 2 - 120;
+  const boxCY = boxRect.top - stageRect.top + boxRect.height / 2 - 20;
 
-  // Slow, smooth glide toward the box
   await anim(traveler, {
-    left: boxCenterX + 'px',
-    top: boxCenterY + 'px',
-    opacity: '0.4',
+    left: boxCX + 'px', top: boxCY + 'px', opacity: '0.4',
   }, 1800, id, 'cubic-bezier(0.25, 0.1, 0.25, 1)');
 
-  // Final absorption into the box
   await anim(traveler, {
     left: (boxRect.left - stageRect.left + boxRect.width / 2 - 40) + 'px',
     top: (boxRect.top - stageRect.top + boxRect.height / 2 - 10) + 'px',
-    opacity: '0',
-    transform: 'scale(0.85)',
+    opacity: '0', transform: 'scale(0.85)',
   }, 800, id, 'cubic-bezier(0.4, 0, 1, 1)');
   traveler.remove();
 
-  // Processing
   await anim(proc, { opacity: '1' }, 400, id);
   const dots = ['', '.', '..', '...'];
   for (let i = 0; i < 6; i++) {
@@ -453,11 +587,8 @@ async function runBlackBox(id) {
   await anim(proc, { opacity: '0' }, 400, id);
   await wait(300, id);
 
-  // Artifact appears
   await anim(artifact, { opacity: '1', transform: 'scale(1)' }, 800, id);
   await wait(2800, id);
-
-  // Fade out
   await anim(artifact, { opacity: '0', transform: 'scale(0.95)' }, 600, id);
   await wait(500, id);
 }
@@ -465,16 +596,14 @@ async function runBlackBox(id) {
 async function runGlass(id) {
   clearAll();
   const prompt = $('prompt');
-  const artifact = $('artifact');
+  const artifact = $('artifact-glass');
   const box = $('box');
 
-  // Show prompt
   prompt.textContent = PROMPT_TEXT;
   await wait(200, id);
   await anim(prompt, { opacity: '1' }, 800, id);
   await wait(1000, id);
 
-  // Prompt glides toward the glass box and fades
   const stageRect = stage.getBoundingClientRect();
   const promptRect = prompt.getBoundingClientRect();
   const boxRect = box.getBoundingClientRect();
@@ -495,23 +624,20 @@ async function runGlass(id) {
   const boxW = boxRect.width;
   const boxH = boxRect.height;
 
-  // Slow glide into the glass
   await anim(traveler, {
-    left: (boxLeft + 20) + 'px',
-    top: (boxTop + 14) + 'px',
-    opacity: '0.3',
+    left: (boxLeft + 20) + 'px', top: (boxTop + 14) + 'px', opacity: '0.3',
   }, 1600, id, 'cubic-bezier(0.25, 0.1, 0.25, 1)');
-
   await anim(traveler, { opacity: '0' }, 400, id);
   traveler.remove();
 
   await wait(300, id);
 
-  // Process steps appear inside the glass box, staggered
+  // Show all steps
   const stepEls = [];
   const stepH = 58;
   const totalH = PROCESS_STEPS.length * stepH;
   const startY = boxTop + (boxH - totalH) / 2 + 10;
+  const ZOOM_INDEX = 2; // data model step
 
   for (let i = 0; i < PROCESS_STEPS.length; i++) {
     const s = PROCESS_STEPS[i];
@@ -525,50 +651,135 @@ async function runGlass(id) {
     stage.appendChild(el);
     stepEls.push(el);
 
-    await wait(250, id);
-    await anim(el, { opacity: '1', transform: 'translateY(0)' }, 500, id);
+    await wait(200, id);
+    await anim(el, { opacity: '1', transform: 'translateY(0)' }, 450, id);
   }
 
-  await wait(600, id);
+  await wait(500, id);
 
-  // Each step highlights in sequence
-  for (let i = 0; i < stepEls.length; i++) {
+  // Highlight steps 0 and 1
+  for (let i = 0; i < ZOOM_INDEX; i++) {
     const el = stepEls[i];
     const label = el.querySelector('.step-label');
     const content = el.querySelector('.step-content');
-
-    // Highlight active step
-    await anim(el, { transform: 'translateX(6px)' }, 350, id);
+    await anim(el, { transform: 'translateX(6px)' }, 300, id);
     if (content) content.style.opacity = '1';
     if (label) label.style.opacity = '1';
-    await wait(700, id);
+    await wait(600, id);
+    await anim(el, { transform: 'translateX(0)', opacity: '0.35' }, 300, id);
+    await wait(120, id);
+  }
 
-    // Dim after processing
-    await anim(el, { transform: 'translateX(0)', opacity: '0.35' }, 350, id);
-    await wait(150, id);
+  // Now ZOOM into step 2 (data model)
+  // Fade out other steps
+  for (let i = 0; i < stepEls.length; i++) {
+    if (i === ZOOM_INDEX) continue;
+    anim(stepEls[i], { opacity: '0' }, 500, id).catch(() => {});
+  }
+
+  // Highlight the zoom step
+  const zoomEl = stepEls[ZOOM_INDEX];
+  const zoomLabel = zoomEl.querySelector('.step-label');
+  const zoomContent = zoomEl.querySelector('.step-content');
+  if (zoomLabel) zoomLabel.style.opacity = '1';
+  if (zoomContent) zoomContent.style.opacity = '1';
+
+  // Move zoom step to top-left of box area
+  await anim(zoomEl, {
+    left: (boxLeft + 24) + 'px',
+    top: (boxTop + 16) + 'px',
+    transform: 'scale(1.05)',
+    opacity: '1',
+  }, 600, id);
+
+  await wait(300, id);
+
+  // Create code panel below the step label
+  const codePanel = document.createElement('div');
+  codePanel.className = 'code-panel';
+  codePanel.style.left = (boxLeft + 16) + 'px';
+  codePanel.style.top = (boxTop + 56) + 'px';
+  codePanel.style.width = (boxW - 32) + 'px';
+  codePanel.style.height = (boxH - 100) + 'px';
+  codePanel.innerHTML = `
+    <div class="code-panel-nav">
+      <div class="code-panel-dot" style="background:#ff5f57"></div>
+      <div class="code-panel-dot" style="background:#ffbd2e"></div>
+      <div class="code-panel-dot" style="background:#28c840"></div>
+      <span class="code-panel-tab">types.ts</span>
+    </div>
+    <div class="code-panel-body"></div>
+    <div class="edit-prompt">
+      <span class="edit-prompt-caret">›</span>
+      <span class="edit-prompt-text"></span>
+    </div>
+  `;
+  stage.appendChild(codePanel);
+
+  await anim(codePanel, { opacity: '1' }, 500, id);
+  await wait(200, id);
+
+  // Stream the code
+  await typeCode(codePanel, id);
+  await wait(600, id);
+
+  // Show the edit prompt
+  const editPrompt = codePanel.querySelector('.edit-prompt');
+  await anim(editPrompt, { opacity: '1' }, 300, id);
+
+  // Type the edit prompt text
+  const editText = codePanel.querySelector('.edit-prompt-text');
+  const editStr = 'Would you like to edit this code?';
+  for (let i = 0; i < editStr.length; i++) {
+    if (runId !== id) return;
+    editText.textContent = editStr.slice(0, i + 1);
+    await wait(30, id);
+  }
+
+  await wait(1200, id);
+
+  // Zoom back out — fade code panel, bring steps back
+  await anim(codePanel, { opacity: '0', transform: 'scale(0.95)' }, 500, id);
+  codePanel.remove();
+
+  // Move zoom step back and dim it
+  await anim(zoomEl, {
+    top: (startY + ZOOM_INDEX * stepH) + 'px',
+    transform: 'translateX(0)',
+    opacity: '0.35',
+  }, 500, id);
+
+  // Bring back remaining steps dimmed
+  for (let i = ZOOM_INDEX + 1; i < stepEls.length; i++) {
+    stepEls[i].style.opacity = '0';
+    await anim(stepEls[i], { opacity: '0.6' }, 300, id);
+    const label = stepEls[i].querySelector('.step-label');
+    const content = stepEls[i].querySelector('.step-content');
+    await anim(stepEls[i], { transform: 'translateX(6px)' }, 300, id);
+    if (content) content.style.opacity = '1';
+    if (label) label.style.opacity = '1';
+    await wait(500, id);
+    await anim(stepEls[i], { transform: 'translateX(0)', opacity: '0.35' }, 300, id);
+    await wait(100, id);
   }
 
   await wait(400, id);
 
-  // Steps converge toward center and fade
+  // Converge and fade
   for (let i = 0; i < stepEls.length; i++) {
-    const el = stepEls[i];
-    anim(el, {
+    anim(stepEls[i], {
       top: (boxTop + boxH / 2 - 10) + 'px',
-      opacity: '0',
-      transform: 'scale(0.9)'
+      opacity: '0', transform: 'scale(0.9)'
     }, 700, id).catch(() => {});
-    await wait(100, id);
+    await wait(80, id);
   }
 
   await wait(800, id);
   stepEls.forEach(el => el.remove());
 
-  // Artifact materializes
+  // Colorful artifact appears
   await anim(artifact, { opacity: '1', transform: 'scale(1)' }, 800, id);
   await wait(2800, id);
-
-  // Fade out
   await anim(artifact, { opacity: '0', transform: 'scale(0.95)' }, 600, id);
   await wait(500, id);
 }
@@ -592,22 +803,17 @@ async function loop(id) {
     try {
       if (mode === 'blackbox') await runBlackBox(id);
       else await runGlass(id);
-    } catch (e) {
-      break; // cancelled — a new loop will be started
-    }
+    } catch (e) { break; }
   }
 }
 
 function switchMode() {
   const next = mode === 'blackbox' ? 'glass' : 'blackbox';
-  runId++; // invalidates all pending waits/anims
+  runId++;
   applyMode(next);
   clearAll();
-  // Let the CSS transition settle, then start
   const id = runId;
-  setTimeout(() => {
-    if (runId === id) loop(id);
-  }, 100);
+  setTimeout(() => { if (runId === id) loop(id); }, 100);
 }
 
 $('toggle').addEventListener('click', switchMode);
