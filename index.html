@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glass</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0a;
+    color: #e0e0e0;
+    font-family: 'JetBrains Mono', monospace;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Wordmark */
+  .wordmark {
+    position: fixed;
+    bottom: 24px;
+    right: 28px;
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: #333;
+    text-transform: uppercase;
+  }
+
+  /* Toggle */
+  .toggle-container {
+    margin-bottom: 64px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    position: relative;
+    user-select: none;
+  }
+
+  .toggle-track {
+    display: flex;
+    background: #141414;
+    border: 1px solid #222;
+    border-radius: 4px;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+  }
+
+  .toggle-option {
+    padding: 10px 24px;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    color: #555;
+    position: relative;
+    z-index: 1;
+    transition: color 0.4s ease;
+    text-transform: uppercase;
+  }
+
+  .toggle-option.active {
+    color: #e0e0e0;
+  }
+
+  .toggle-slider {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    height: calc(100% - 4px);
+    width: calc(50% - 2px);
+    background: #1e1e1e;
+    border-radius: 3px;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid #2a2a2a;
+  }
+
+  .toggle-slider.glass {
+    transform: translateX(100%);
+  }
+
+  /* Stage */
+  .stage {
+    width: 90vw;
+    max-width: 1100px;
+    height: 340px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Sentences */
+  .sentence {
+    position: absolute;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.6;
+    max-width: 280px;
+    white-space: normal;
+  }
+
+  .sentence-input {
+    left: 0;
+    text-align: left;
+    color: #888;
+  }
+
+  .sentence-output {
+    right: 0;
+    text-align: right;
+    color: #e0e0e0;
+  }
+
+  /* Black box */
+  .black-box {
+    width: 160px;
+    height: 160px;
+    background: #0f0f0f;
+    border: 1px solid #1a1a1a;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .black-box.glass-mode {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    width: 400px;
+    height: 240px;
+  }
+
+  /* Animated word tokens */
+  .token {
+    position: absolute;
+    font-size: 14px;
+    font-weight: 300;
+    opacity: 0;
+    transition: none;
+    pointer-events: none;
+  }
+
+  .token-label {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: block;
+    margin-top: 2px;
+    opacity: 0.4;
+  }
+
+  .layer-syntax { color: #6b8aad; }
+  .layer-meaning { color: #ad8a6b; }
+  .layer-tone { color: #8aad6b; }
+  .layer-intent { color: #ad6b8a; }
+
+  /* Processing indicator */
+  .processing {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: #333;
+    text-transform: uppercase;
+    opacity: 0;
+  }
+
+  /* Traveling sentence fragment */
+  .traveler {
+    position: absolute;
+    font-size: 15px;
+    font-weight: 300;
+    opacity: 0;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  /* Replay hint */
+  .hint {
+    position: fixed;
+    bottom: 24px;
+    left: 28px;
+    font-size: 10px;
+    color: #282828;
+    letter-spacing: 0.08em;
+  }
+
+  .hint span {
+    color: #3a3a3a;
+    border: 1px solid #222;
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-right: 4px;
+  }
+</style>
+</head>
+<body>
+
+<div class="toggle-container">
+  <div class="toggle-track" id="toggle">
+    <div class="toggle-slider" id="slider"></div>
+    <div class="toggle-option active" id="opt-blackbox">Black Box</div>
+    <div class="toggle-option" id="opt-glass">Glass</div>
+  </div>
+</div>
+
+<div class="stage" id="stage">
+  <div class="sentence sentence-input" id="input-sentence"></div>
+  <div class="black-box" id="box"></div>
+  <div class="processing" id="processing">processing</div>
+  <div class="sentence sentence-output" id="output-sentence"></div>
+</div>
+
+<div class="hint"><span>Space</span> replay</div>
+<div class="wordmark">Glass</div>
+
+<script>
+const INPUT = "Can you make this sound less aggressive and more like a professional request?";
+const OUTPUT = "I'd appreciate your help adjusting the tone to feel more collaborative and polished.";
+
+const LAYERS = [
+  { word: "Can you", layer: "syntax", label: "interrogative", newWord: "I'd appreciate" },
+  { word: "make this", layer: "intent", label: "directive", newWord: "your help" },
+  { word: "sound less", layer: "tone", label: "hedging", newWord: "adjusting the" },
+  { word: "aggressive", layer: "meaning", label: "negative frame", newWord: "tone to feel" },
+  { word: "and more like", layer: "syntax", label: "comparative", newWord: "more collaborative" },
+  { word: "a professional", layer: "meaning", label: "qualifier", newWord: "and" },
+  { word: "request?", layer: "intent", label: "desired outcome", newWord: "polished." },
+];
+
+let mode = 'blackbox';
+let animating = false;
+let animationTimers = [];
+
+const $ = id => document.getElementById(id);
+const stage = $('stage');
+const box = $('box');
+
+function clearAnimation() {
+  animationTimers.forEach(t => clearTimeout(t));
+  animationTimers = [];
+  document.querySelectorAll('.token, .traveler').forEach(el => el.remove());
+  $('input-sentence').textContent = '';
+  $('input-sentence').style.opacity = '1';
+  $('output-sentence').textContent = '';
+  $('output-sentence').style.opacity = '0';
+  $('processing').style.opacity = '0';
+  box.className = 'black-box';
+  if (mode === 'glass') box.classList.add('glass-mode');
+}
+
+function delay(ms) {
+  return new Promise(resolve => {
+    animationTimers.push(setTimeout(resolve, ms));
+  });
+}
+
+function animate(el, props, duration, easing = 'cubic-bezier(0.16, 1, 0.3, 1)') {
+  return new Promise(resolve => {
+    el.style.transition = `all ${duration}ms ${easing}`;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        Object.assign(el.style, props);
+        animationTimers.push(setTimeout(resolve, duration));
+      });
+    });
+  });
+}
+
+async function runBlackBox() {
+  animating = true;
+  clearAnimation();
+  const input = $('input-sentence');
+  const output = $('output-sentence');
+
+  input.textContent = INPUT;
+  input.style.opacity = '0';
+  await delay(200);
+  await animate(input, { opacity: '1' }, 600);
+  await delay(800);
+
+  // Create traveler
+  const traveler = document.createElement('div');
+  traveler.className = 'traveler';
+  traveler.textContent = INPUT;
+  traveler.style.color = '#888';
+  const inputRect = input.getBoundingClientRect();
+  const stageRect = stage.getBoundingClientRect();
+  traveler.style.left = (inputRect.left - stageRect.left) + 'px';
+  traveler.style.top = (inputRect.top - stageRect.top) + 'px';
+  traveler.style.opacity = '1';
+  stage.appendChild(traveler);
+  input.style.opacity = '0';
+
+  const boxRect = box.getBoundingClientRect();
+  const targetX = boxRect.left - stageRect.left - 10;
+  const targetY = boxRect.top - stageRect.top + boxRect.height / 2 - 10;
+
+  await animate(traveler, {
+    left: targetX + 'px',
+    top: targetY + 'px',
+    opacity: '0',
+    transform: 'scale(0.8)'
+  }, 900);
+  traveler.remove();
+
+  // Processing
+  const proc = $('processing');
+  await animate(proc, { opacity: '1' }, 300);
+  await delay(1400);
+  await animate(proc, { opacity: '0' }, 300);
+  await delay(200);
+
+  // Output emerges
+  const outTraveler = document.createElement('div');
+  outTraveler.className = 'traveler';
+  outTraveler.textContent = OUTPUT;
+  outTraveler.style.color = '#e0e0e0';
+  const outTargetRect = output.getBoundingClientRect();
+  outTraveler.style.left = (boxRect.right - stageRect.left + 10) + 'px';
+  outTraveler.style.top = (boxRect.top - stageRect.top + boxRect.height / 2 - 10) + 'px';
+  outTraveler.style.opacity = '0';
+  outTraveler.style.transform = 'scale(0.8)';
+  stage.appendChild(outTraveler);
+
+  await animate(outTraveler, {
+    left: (outTargetRect.left - stageRect.left) + 'px',
+    top: (outTargetRect.top - stageRect.top) + 'px',
+    opacity: '1',
+    transform: 'scale(1)'
+  }, 900);
+
+  outTraveler.remove();
+  output.textContent = OUTPUT;
+  output.style.opacity = '1';
+  await animate(output, { opacity: '1' }, 400);
+
+  animating = false;
+}
+
+async function runGlass() {
+  animating = true;
+  clearAnimation();
+  const input = $('input-sentence');
+  const output = $('output-sentence');
+
+  input.textContent = INPUT;
+  input.style.opacity = '0';
+  await delay(200);
+  await animate(input, { opacity: '1' }, 600);
+  await delay(800);
+
+  input.style.opacity = '0';
+
+  const stageRect = stage.getBoundingClientRect();
+  const boxRect = box.getBoundingClientRect();
+  const inputRect = input.getBoundingClientRect();
+
+  // Create tokens that fly from input position into the glass box
+  const tokens = [];
+  const boxCenterX = boxRect.left - stageRect.left + boxRect.width / 2;
+  const boxCenterY = boxRect.top - stageRect.top + boxRect.height / 2;
+  const startX = inputRect.left - stageRect.left;
+  const startY = inputRect.top - stageRect.top;
+
+  LAYERS.forEach((item, i) => {
+    const token = document.createElement('div');
+    token.className = `token layer-${item.layer}`;
+    token.innerHTML = `${item.word}<span class="token-label">${item.label}</span>`;
+    token.style.left = startX + 'px';
+    token.style.top = (startY + i * 4) + 'px';
+    token.style.opacity = '0';
+    stage.appendChild(token);
+    tokens.push({ el: token, data: item, index: i });
+  });
+
+  // Stagger tokens appearing and moving into the box
+  const rows = LAYERS.length;
+  const spacing = 32;
+  const totalHeight = rows * spacing;
+  const topOffset = boxCenterY - totalHeight / 2;
+
+  for (let i = 0; i < tokens.length; i++) {
+    const t = tokens[i];
+    await delay(120);
+    t.el.style.opacity = '1';
+    const targetX = boxRect.left - stageRect.left + 24;
+    const targetY = topOffset + i * spacing;
+    animate(t.el, {
+      left: targetX + 'px',
+      top: targetY + 'px',
+      opacity: '1'
+    }, 700);
+  }
+
+  await delay(900);
+
+  // Analyze phase — tokens shift slightly, labels brighten
+  for (let i = 0; i < tokens.length; i++) {
+    const t = tokens[i];
+    const label = t.el.querySelector('.token-label');
+    if (label) label.style.opacity = '0.8';
+    animate(t.el, {
+      left: (boxRect.left - stageRect.left + 20 + Math.sin(i * 1.2) * 15) + 'px'
+    }, 500);
+    await delay(200);
+  }
+
+  await delay(600);
+
+  // Transform phase — words change to output words
+  for (let i = 0; i < tokens.length; i++) {
+    const t = tokens[i];
+    await animate(t.el, { opacity: '0.3', transform: 'scale(0.95)' }, 250);
+    t.el.innerHTML = `${t.data.newWord}<span class="token-label layer-${t.data.layer}" style="opacity:0.8">${t.data.label}</span>`;
+    await animate(t.el, { opacity: '1', transform: 'scale(1)' }, 250);
+    await delay(100);
+  }
+
+  await delay(600);
+
+  // Reassemble — tokens move toward output position
+  const outputRect = output.getBoundingClientRect();
+  const outX = outputRect.right - stageRect.left;
+  const outY = outputRect.top - stageRect.top;
+
+  for (let i = 0; i < tokens.length; i++) {
+    const t = tokens[i];
+    const label = t.el.querySelector('.token-label');
+    if (label) label.style.opacity = '0';
+    animate(t.el, {
+      left: (outX - 200) + 'px',
+      top: (outY + i * 2) + 'px',
+      opacity: '0',
+      color: '#e0e0e0'
+    }, 800);
+    await delay(80);
+  }
+
+  await delay(600);
+
+  tokens.forEach(t => t.el.remove());
+  output.textContent = OUTPUT;
+  await animate(output, { opacity: '1' }, 500);
+
+  animating = false;
+}
+
+function setMode(newMode) {
+  mode = newMode;
+  if (mode === 'glass') {
+    $('slider').classList.add('glass');
+    $('opt-blackbox').classList.remove('active');
+    $('opt-glass').classList.add('active');
+  } else {
+    $('slider').classList.remove('glass');
+    $('opt-blackbox').classList.add('active');
+    $('opt-glass').classList.remove('active');
+  }
+}
+
+function play() {
+  if (animating) return;
+  if (mode === 'blackbox') runBlackBox();
+  else runGlass();
+}
+
+$('toggle').addEventListener('click', () => {
+  if (animating) return;
+  setMode(mode === 'blackbox' ? 'glass' : 'blackbox');
+  play();
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'Space') {
+    e.preventDefault();
+    play();
+  }
+});
+
+// Auto-play on load
+setTimeout(play, 400);
+</script>
+</body>
+</html>
